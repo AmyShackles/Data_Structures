@@ -1,3 +1,20 @@
+const Mocha = require('mocha');
+const runner = new Mocha({});
+const inspect = Symbol.for('nodejs.util.inspect.custom');
+
+runner.addFile('./DynamicArray.test.js');
+
+runner.run(failures => {
+    if (failures) {
+        console.error(failures);
+    } else {
+        console.log('All passed');
+    }
+});
+
+
+
+
 class DynamicArray {
     constructor(...vals) {
 
@@ -579,6 +596,48 @@ class DynamicArray {
         }
         this.length += numToAdd;
         return [...deleted.values()];
+    }
+    reduce(cb, initialValue) {
+        // If callback isn't callable, throw error
+        if (typeof cb !== 'function' && Object.prototype.toString.call(cb) !== '[object Function]') {
+            throw new TypeError(`${JSON.stringify(cb)} is not a function`);
+        }
+        if (initialValue === undefined && this.length === 0) {
+            throw new TypeError("You cannot reduce an empty array without an initialValue")
+        }
+        let index, accumulator;
+        if (initialValue) {
+            index = 0;
+            accumulator = initialValue;
+        } else {
+            index = 1;
+            accumulator = this.data[0];
+        };
+        while (index < this.length) {
+            accumulator = cb(accumulator, this.data[index], index++, [...this.values()]);
+        }
+        return accumulator;
+    }
+    reduceRight(cb, initialValue) {
+                // If callback isn't callable, throw error
+        if (typeof cb !== 'function' && Object.prototype.toString.call(cb) !== '[object Function]') {
+            throw new TypeError(`${JSON.stringify(cb)} is not a function`);
+        }
+        if (initialValue === undefined && this.length === 0) {
+            throw new TypeError("You cannot reduce an empty array without an initialValue")
+        }
+        let index, accumulator;
+        if (initialValue) {
+            index = this.length - 1;
+            accumulator = initialValue;
+        } else {
+            index = this.length - 2;
+            accumulator = this.data[this.length - 1];
+        };
+        while (index >= 0) {
+            accumulator = cb(accumulator, this.data[index], index--, [...this.values()]);
+        }
+        return accumulator;
     }
 }
 

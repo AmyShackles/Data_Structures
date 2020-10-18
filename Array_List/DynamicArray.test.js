@@ -845,6 +845,96 @@ describe('DynamicArray', () => {
             const actual = arr.toString();
             const expected = 'krunal,ankit,hello,rushabh,dhaval';
             expect(actual).to.deep.equal(expected);
+        });
+    });
+    describe("toLocaleString", () => {
+        it("should work with dates", () => {
+            let arr = new DynamicArray(1, 'a', new Date('21 Dec 1997 14:12:00 UTC'));
+            const actual = arr.toLocaleString('en', { timeZone: 'UTC'});
+            const expected = "1,a,12/21/1997, 2:12:00 PM";
+            expect(actual).to.deep.equal(expected)
+        });
+        it('should work with numbers', () => {
+            let arr = new DynamicArray();
+            arr.push('￥7', 500, 8123, 12);
+            const actual = arr.toLocaleString('en', { style: 'currency', currency: 'JPY' });
+            const expected = "￥7,¥500,¥8,123,¥12";
+            expect(actual).to.equal(expected);
         })
+    })
+    describe("slice", () => {
+        it("should return a shallow copy of a portion of the array", () => {
+            let arr = new DynamicArray(1,2,3,4,5,6,7);
+            const actual = arr.slice(1,-1);
+            const expected = [2,3,4,5,6];
+            expect(actual).to.deep.equal(expected);
+        });
+        it("should not modify the original array", () => {
+            let arr = new DynamicArray(1,2,3);
+            arr.slice(0,1);
+            const actual = [...arr.values()];
+            const expected = [1,2,3];
+            expect(actual).to.deep.equal(expected);
+        });
+        it("should return an empty array if the start passed in is larger than the array length", () => {
+            let newArr = new DynamicArray(1,2,3);
+            const actual = newArr.slice(5);
+            const expected = [];
+            expect(actual).to.deep.equal(expected);
+        });
+        it("should extract through the end of the array if the end passed is larger than the array length", () => {
+            let arr = new DynamicArray(1,2,3);
+            const actual = arr.slice(1,5);
+            const expected = [2,3];
+            expect(actual).to.deep.equal(expected);
+        })
+    });
+    describe("splice", () => {
+        it("should be able to change the contents of the array by removing elements", () => {
+            let arr = new DynamicArray(1,2,3,4);
+            arr.splice(2,2);
+            const actual = [...arr.values()];
+            const expected = [1,2];
+            expect(actual).to.deep.equal(expected)
+        });
+        it("should be able to change the contents of the array by replacing elements", () => {
+            let arr = new DynamicArray(1,2,3,4);
+            arr.splice(1,1,7,8);
+            const actual = [...arr.values()];
+            const expected = [1,7,8,3,4];
+            expect(actual).to.deep.equal(expected);
+        });
+        it("should be able to change the contents of the array by adding elements", () => {
+            let arr = new DynamicArray(1,2,3,4);
+            arr.splice(0,0,1,2,3);
+            const actual = [...arr.values()];
+            const expected = [1,2,3,1,2,3,4];
+            expect(actual).to.deep.equal(expected);
+        });
+        it('should remove all elements of the array from start to the end of the array if no deleteCount is specified', () => {
+            let arr = new DynamicArray(1,2,3,4);
+            arr.splice(0);
+            const actual = [...arr.values()];
+            const expected = [];
+            expect(actual).to.deep.equal(expected);
+        })
+        it('should return the elements deleted if elements were deleted', () => {
+            let arr = new DynamicArray(1,2,3,4);
+            const actual = arr.splice(0,2);
+            const expected = [1,2];
+            expect(actual).to.deep.equal(expected);
+        });
+        it('should return an empty array if no elements are removed', () => {
+            let arr = new DynamicArray(1,2,3,4);
+            const actual = arr.splice(0,0,2);
+            const expected = [];
+            expect(actual).to.deep.equal(expected);
+        })
+    });
+    describe("reduce", () => {
+        it("should invoke a callback on every element in the array, resulting in a single output value")
+    });
+    describe("reduceRight", () => {
+        it("should invoke a callback on every element in the array from right to left, resulting in a single output value")
     })
 })

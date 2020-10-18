@@ -758,84 +758,84 @@ describe('DynamicArray', () => {
         it('should flatten by one level if no depth is passed', () => {
             let arr = new DynamicArray();
             let a = new DynamicArray();
-            a.push(1,2);
+            a.push(1, 2);
             let b = new DynamicArray();
-            b.push(3,4);
+            b.push(3, 4);
             a.push(b);
             arr.push(a);
             const actual = arr.flat();
-            const expected = [1,2,3,4];
+            const expected = [1, 2, 3, 4];
             expect(actual).to.deep.equal(expected);
         });
         it('should flatten by two levels if a depth of 2 is passed', () => {
             let arr = new DynamicArray();
             let a = new DynamicArray();
-            a.push(1,2,3);
+            a.push(1, 2, 3);
             let b = new DynamicArray();
             b.push(1);
             let c = new DynamicArray();
-            c.push(2,3);
+            c.push(2, 3);
             b.push(c);
             let d = new DynamicArray();
             let e = new DynamicArray();
             let f = new DynamicArray();
-            f.push(5,6);
-            e.push(3,4,f);
-            d.push(2,e);
+            f.push(5, 6);
+            e.push(3, 4, f);
+            d.push(2, e);
             arr.push(a, b, d);
             const actual = arr.flat(2);
-            const expected = [1,2,3,1,2,3,2,3,4,[5,6]];
+            const expected = [1, 2, 3, 1, 2, 3, 2, 3, 4, [5, 6]];
             expect(actual).to.deep.equal(expected);
         });
         it('should flatten by three levels if a depth of 3 is passed', () => {
-            let arr = new DynamicArray([1,2,3], [1,[2,3]], [2,[3,4, [5,6]]]);
+            let arr = new DynamicArray([1, 2, 3], [1, [2, 3]], [2, [3, 4, [5, 6]]]);
             const actual = arr.flat(3);
-            const expected = [1,2,3,1,2,3,2,3,4,5,6];
+            const expected = [1, 2, 3, 1, 2, 3, 2, 3, 4, 5, 6];
             expect(actual).to.deep.equal(expected);
         });
     });
     describe('map', () => {
-        it('should not change the original array', () =>{
-             let arr = new DynamicArray(1,4,9);
-             arr.map(num => Math.sqrt(num));
-             const actual = [...arr.values()];
-             const expected = [1,4,9];
-             expect(actual).to.deep.equal(expected);
+        it('should not change the original array', () => {
+            let arr = new DynamicArray(1, 4, 9);
+            arr.map(num => Math.sqrt(num));
+            const actual = [...arr.values()];
+            const expected = [1, 4, 9];
+            expect(actual).to.deep.equal(expected);
         })
         it('should return a new array populated with tge results of calling cb on every element', () => {
-            let arr = new DynamicArray(1,4,9);
+            let arr = new DynamicArray(1, 4, 9);
             const actual = arr.map(num => Math.sqrt(num));
-             const expected = [1,2,3];
-             expect(actual).to.deep.equal(expected); 
+            const expected = [1, 2, 3];
+            expect(actual).to.deep.equal(expected);
         });
         it('can be used to reformat an array of objects', () => {
-            const arr = new DynamicArray({key: 1, value: 10}, { key: 2, value: 20}, {key: 3, value: 30});
+            const arr = new DynamicArray({ key: 1, value: 10 }, { key: 2, value: 20 }, { key: 3, value: 30 });
             const actual = arr.map(obj => {
                 let newObj = {};
                 newObj[obj.key] = obj.value;
                 return newObj;
             });
-            const expected = [{1: 10}, {2:20}, {3:30}];
-            expect(actual).to.deep.equal(expected); 
+            const expected = [{ 1: 10 }, { 2: 20 }, { 3: 30 }];
+            expect(actual).to.deep.equal(expected);
         });
     });
     describe("flatMap", () => {
         it('should return a new array applying the callback to each element and then flattening by one level', () => {
-            const arr = new DynamicArray(1,2,3,4);
+            const arr = new DynamicArray(1, 2, 3, 4);
             const actual = arr.flatMap(x => [x, x * 2]);
-            const expected = [1,2,2,4,3,6,4,8];
+            const expected = [1, 2, 2, 4, 3, 6, 4, 8];
             expect(actual).to.deep.equal(expected)
         });
         it('should be able to handle more complex operations', () => {
-            let arr = new DynamicArray(5,4,-3,20,17,-33,-4,18);
-            const actual = arr.flatMap(n => (n < 0) ? [] : (n % 2 == 0) ? [n] : [n-1, 1]);
-            const expected = [4,1,4,20,16,1,18];
+            let arr = new DynamicArray(5, 4, -3, 20, 17, -33, -4, 18);
+            const actual = arr.flatMap(n => (n < 0) ? [] : (n % 2 == 0) ? [n] : [n - 1, 1]);
+            const expected = [4, 1, 4, 20, 16, 1, 18];
             expect(actual).to.deep.equal(expected);
         })
     });
     describe('toString', () => {
         it('should return the values of the array separated by commas', () => {
-            let arr = new DynamicArray(1,2,3);
+            let arr = new DynamicArray(1, 2, 3);
             const actual = arr.toString();
             const expected = '1,2,3';
             expect(actual).to.deep.equal(expected);
@@ -850,7 +850,7 @@ describe('DynamicArray', () => {
     describe("toLocaleString", () => {
         it("should work with dates", () => {
             let arr = new DynamicArray(1, 'a', new Date('21 Dec 1997 14:12:00 UTC'));
-            const actual = arr.toLocaleString('en', { timeZone: 'UTC'});
+            const actual = arr.toLocaleString('en', { timeZone: 'UTC' });
             const expected = "1,a,12/21/1997, 2:12:00 PM";
             expect(actual).to.deep.equal(expected)
         });
@@ -864,77 +864,149 @@ describe('DynamicArray', () => {
     })
     describe("slice", () => {
         it("should return a shallow copy of a portion of the array", () => {
-            let arr = new DynamicArray(1,2,3,4,5,6,7);
-            const actual = arr.slice(1,-1);
-            const expected = [2,3,4,5,6];
+            let arr = new DynamicArray(1, 2, 3, 4, 5, 6, 7);
+            const actual = arr.slice(1, -1);
+            const expected = [2, 3, 4, 5, 6];
             expect(actual).to.deep.equal(expected);
         });
         it("should not modify the original array", () => {
-            let arr = new DynamicArray(1,2,3);
-            arr.slice(0,1);
+            let arr = new DynamicArray(1, 2, 3);
+            arr.slice(0, 1);
             const actual = [...arr.values()];
-            const expected = [1,2,3];
+            const expected = [1, 2, 3];
             expect(actual).to.deep.equal(expected);
         });
         it("should return an empty array if the start passed in is larger than the array length", () => {
-            let newArr = new DynamicArray(1,2,3);
+            let newArr = new DynamicArray(1, 2, 3);
             const actual = newArr.slice(5);
             const expected = [];
             expect(actual).to.deep.equal(expected);
         });
         it("should extract through the end of the array if the end passed is larger than the array length", () => {
-            let arr = new DynamicArray(1,2,3);
-            const actual = arr.slice(1,5);
-            const expected = [2,3];
+            let arr = new DynamicArray(1, 2, 3);
+            const actual = arr.slice(1, 5);
+            const expected = [2, 3];
             expect(actual).to.deep.equal(expected);
         })
     });
     describe("splice", () => {
         it("should be able to change the contents of the array by removing elements", () => {
-            let arr = new DynamicArray(1,2,3,4);
-            arr.splice(2,2);
+            let arr = new DynamicArray(1, 2, 3, 4);
+            arr.splice(2, 2);
             const actual = [...arr.values()];
-            const expected = [1,2];
+            const expected = [1, 2];
             expect(actual).to.deep.equal(expected)
         });
         it("should be able to change the contents of the array by replacing elements", () => {
-            let arr = new DynamicArray(1,2,3,4);
-            arr.splice(1,1,7,8);
+            let arr = new DynamicArray(1, 2, 3, 4);
+            arr.splice(1, 1, 7, 8);
             const actual = [...arr.values()];
-            const expected = [1,7,8,3,4];
+            const expected = [1, 7, 8, 3, 4];
             expect(actual).to.deep.equal(expected);
         });
         it("should be able to change the contents of the array by adding elements", () => {
-            let arr = new DynamicArray(1,2,3,4);
-            arr.splice(0,0,1,2,3);
+            let arr = new DynamicArray(1, 2, 3, 4);
+            arr.splice(0, 0, 1, 2, 3);
             const actual = [...arr.values()];
-            const expected = [1,2,3,1,2,3,4];
+            const expected = [1, 2, 3, 1, 2, 3, 4];
             expect(actual).to.deep.equal(expected);
         });
         it('should remove all elements of the array from start to the end of the array if no deleteCount is specified', () => {
-            let arr = new DynamicArray(1,2,3,4);
+            let arr = new DynamicArray(1, 2, 3, 4);
             arr.splice(0);
             const actual = [...arr.values()];
             const expected = [];
             expect(actual).to.deep.equal(expected);
         })
         it('should return the elements deleted if elements were deleted', () => {
-            let arr = new DynamicArray(1,2,3,4);
-            const actual = arr.splice(0,2);
-            const expected = [1,2];
+            let arr = new DynamicArray(1, 2, 3, 4);
+            const actual = arr.splice(0, 2);
+            const expected = [1, 2];
             expect(actual).to.deep.equal(expected);
         });
         it('should return an empty array if no elements are removed', () => {
-            let arr = new DynamicArray(1,2,3,4);
-            const actual = arr.splice(0,0,2);
+            let arr = new DynamicArray(1, 2, 3, 4);
+            const actual = arr.splice(0, 0, 2);
             const expected = [];
             expect(actual).to.deep.equal(expected);
         })
     });
     describe("reduce", () => {
-        it("should invoke a callback on every element in the array, resulting in a single output value")
+        it("should invoke a callback on every element in the array, resulting in a single output value", () => {
+            let arr = new DynamicArray([0, 1], [2, 3], [4, 5]);
+            const actual = arr.reduce((accum, current) => accum.concat(current), []);
+            const expected = [0, 1, 2, 3, 4, 5];
+            expect(actual).to.deep.equal(expected)
+        });
+        it('should be able to bond arrays contained in an array of objects', () => {
+            let arr = new DynamicArray({
+                name: 'Anna',
+                books: ['Bible', 'Harry Potter'],
+                age: 21
+            }, {
+                    name: 'Bob',
+                    books: ['War and peace', 'Romeo and Juliet'],
+                    age: 26
+                }, {
+                    name: 'Alice',
+                    books: ['The Lord of the Rings', 'The Shining'],
+                    age: 18
+                });
+            const actual = arr.reduce((accum, current) => [...accum, ...current.books], ['Alphabet']);
+            const expected = [
+                'Alphabet', 'Bible', 'Harry Potter', 'War and peace',
+                'Romeo and Juliet', 'The Lord of the Rings',
+                'The Shining'
+            ];
+            expect(actual).to.deep.equal(expected);
+        });
+        it('should be able to sum values of array if no initialValue passed', () => {
+            let arr = new DynamicArray(2,4,8,12);
+            const actual = arr.reduce((accum, curr) => accum + curr);
+            const expected = 26;
+            expect(actual).to.equal(expected);
+        });
+        it('should throw a TypeError if an empty array is passed with no initialValue', () => {
+            expect(() => {
+                let arr = new DynamicArray();
+                arr.reduce((accum, curr) => accum + curr)
+            }).to.throw(TypeError, "You cannot reduce an empty array without an initialValue")
+        });
+        it('should reduce from left to right', () => {
+            let arr = new DynamicArray('1', '2', '3', '4', '5');
+            const actual = arr.reduce((prev, curr) => prev + curr);
+            const expected = '12345';
+            expect(actual).to.deep.equal(expected);
+        })
     });
     describe("reduceRight", () => {
-        it("should invoke a callback on every element in the array from right to left, resulting in a single output value")
+        it("should invoke a callback on every element in the array from right to left, resulting in a single output value", () => {
+            let arr = new DynamicArray('1', '2', '3', '4', '5');
+            const actual = arr.reduceRight((prev, curr) => prev + curr);
+            const expected = '54321';
+            expect(actual).to.deep.equal(expected)
+        });
+        it('should be able to flatten an array', () => {
+            let arr = new DynamicArray([0,1], [2,3], [4,5]);
+            const actual = arr.reduceRight((a, b) => a.concat(b), []);
+            const expected = [4,5,2,3,0,1];
+            expect(actual).to.deep.equal(expected);
+        });
+                it('should throw a TypeError if an empty array is passed with no initialValue', () => {
+            expect(() => {
+                let arr = new DynamicArray();
+                arr.reduceRight((accum, curr) => accum + curr)
+            }).to.throw(TypeError, "You cannot reduce an empty array without an initialValue")
+        });
+    })
+});
+describe('sanity check', () => {
+    it('should return the same thing the inbuilt method does', () => {
+        let arr = ['￥7', 500, 8123, 12];
+        let inbuilt = arr.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
+        let dynamicArr = new DynamicArray();
+        dynamicArr.push('￥7', 500, 8123, 12);
+        let dynamic = dynamicArr.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' });
+        expect(inbuilt).to.deep.equal(dynamic)
     })
 })

@@ -5,11 +5,11 @@ class DynamicArray {
         this.length = 0;
         this.data = {};
         if (vals.length) {
-            this.push(...vals)
+            this.push(...vals);
         }
     }
     toString() {
-        return [...this.values()].join()
+        return [...this.values()].join();
     }
     [inspect]() {
         // This function makes it so use of console.log on a DynamicArray reveals what appears to be a normal array 
@@ -41,7 +41,7 @@ class DynamicArray {
         let length = this.length - 1;
         let newArray = {};
         while (length >= 0) {
-            newArray[length + values.length] = this.data[length--]
+            newArray[length + values.length] = this.data[length--];
         }
 
         let index = 0;
@@ -73,12 +73,12 @@ class DynamicArray {
             this.data[i] = this.data[j];
             this.data[j] = temp;
         }
-        return [...this.values()]
+        return [...this.values()];
     }
     *entries() {
         let next = 0;
         while (next < this.length) {
-            yield [next, this.data[next++]]
+            yield [next, this.data[next++]];
         }
     }
     *keys() {
@@ -95,8 +95,8 @@ class DynamicArray {
     }
     every(callback, thisArgument) {
         let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof callback !== 'function' && Object.prototype.toString.call(callback) !== '[object Function]') {
@@ -131,8 +131,8 @@ class DynamicArray {
     }
     some(callback, thisArgument) {
         let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof callback !== 'function' && Object.prototype.toString.call(callback) !== '[object Function]') {
@@ -164,11 +164,11 @@ class DynamicArray {
             index++;
         }
         return false;
-    };
+    }
     filter(callback, thisArgument) {
         let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof callback !== 'function' && Object.prototype.toString.call(callback) !== '[object Function]') {
@@ -181,7 +181,7 @@ class DynamicArray {
         }
 
         index = 0;
-        let newArr = []
+        let newArr = [];
         while (index < this.length) {
             let value;
 
@@ -194,7 +194,7 @@ class DynamicArray {
                     result = callback(value, index);
                 }
                 if (result) {
-                    newArr.push(value)
+                    newArr.push(value);
                 }
             }
             index++;
@@ -220,8 +220,8 @@ class DynamicArray {
     }
     find(callback, thisArgument) {
         let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof callback !== 'function' && Object.prototype.toString.call(callback) !== '[object Function]') {
@@ -251,12 +251,12 @@ class DynamicArray {
             }
             index++;
         }
-        return undefined
+        return undefined;
     }
     findIndex(callback, thisArgument) {
         let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof callback !== 'function' && Object.prototype.toString.call(callback) !== '[object Function]') {
@@ -269,7 +269,7 @@ class DynamicArray {
         }
 
         index = 0;
-        let newArr = []
+        let newArr = [];
         while (index < this.length) {
             let value;
 
@@ -329,20 +329,20 @@ class DynamicArray {
         }
         let newArr = new DynamicArray();
         const values = [...this.values()];
-        newArr.push(...values)
+        newArr.push(...values);
         for (let i = 0; i < arrays.length; i++) {
             for (let element of arrays[i].values()) {
                 newArr.push(element);
             }
         }
-        return [...newArr.values()]
+        return [...newArr.values()];
     }
     join(separator) {
         if (this.length === 0) {
             return "";
         }
         if (separator === undefined) {
-            separator = ","
+            separator = ",";
         }
         let stringArr = '';
         for (let i = 0; i < this.length; i++) {
@@ -366,7 +366,7 @@ class DynamicArray {
     }
     copyWithin(target, start = 0, end = this.length) {
         if (target >= this.length) {
-            return [...this.values()]
+            return [...this.values()];
         }
         if (target < 0 && target + this.length > 0) {
             target += this.length;
@@ -405,15 +405,15 @@ class DynamicArray {
         }
         while (count > 0) {
             if (start in this.data) {
-                this.data[target] = this.data[start]
+                this.data[target] = this.data[start];
             } else {
-                delete this.data[target]
+                delete this.data[target];
             }
             start += direction;
             target += direction;
             count--;
         }
-        return [...this.values()]
+        return [...this.values()];
     }
     flat(depth = 1) {
         function flattenLevel(arr, values, level) {
@@ -421,9 +421,9 @@ class DynamicArray {
                 for (const value of values.values()) {
                     if (level >= 0) {
                         if (typeof value !== 'object') {
-                            arr.push(value)
+                            arr.push(value);
                         } else {
-                            flattenLevel(arr, value, level - 1)
+                            flattenLevel(arr, value, level - 1);
                         }
                     }
                 }
@@ -439,15 +439,15 @@ class DynamicArray {
             if (typeof value !== 'object') {
                 newArr.push(value);
             } else {
-                flattenLevel(newArr, value, depth--)
+                flattenLevel(newArr, value, depth--);
             }
         }
-        return [...newArr.values()]
+        return [...newArr.values()];
     }
     map(cb, thisArg) {
-       let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        let currentThis, index;
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof cb !== 'function' && Object.prototype.toString.call(cb) !== '[object Function]') {
@@ -459,9 +459,9 @@ class DynamicArray {
             currentThis = thisArgument;
         }
         index = 0;
-        let newArr = []
+        let newArr = [];
         while (index < this.length) {
-            let mapValue, value; 
+            let mapValue, value;
 
             if (index in this.data) {
                 value = this.data[index];
@@ -473,9 +473,9 @@ class DynamicArray {
         return newArr;
     }
     flatMap(cb, thisArg) {
-       let currentThis, index;
-        if (this == null) {
-            throw new TypeError("this is null or not defined")
+        let currentThis, index;
+        if (this === null) {
+            throw new TypeError("this is null or not defined");
         }
         // If callback isn't callable, throw error
         if (typeof cb !== 'function' && Object.prototype.toString.call(cb) !== '[object Function]') {
@@ -487,9 +487,9 @@ class DynamicArray {
             currentThis = thisArgument;
         }
         index = 0;
-        let newArr = []
+        let newArr = [];
         while (index < this.length) {
-            let mapValue, value; 
+            let mapValue, value;
 
             if (index in this.data) {
                 value = this.data[index];
@@ -500,7 +500,87 @@ class DynamicArray {
         }
         return newArr.flat();
     }
+    toLocaleString(locales, options) {
+        if (this.length === 0) {
+            return "";
+        }
+        let obj = Object(this.data);
+        let separator = ',';
+        let stringArr;
+        if (this.data[0] === undefined) {
+            stringArr = "";
+        } else if (obj[0] === null) {
+            stringArr = "";
+        } else {
+            stringArr = obj[0].toLocaleString(locales, options);
+        }
+        for (let i = 1; i < this.length; i++) {
+            let string = stringArr + separator;
+            let value;
+            if (obj[i] === undefined) {
+                stringArr = "";
+            } else if (obj[i] === null) {
+                stringArr = "";
+            } else {
+                stringArr = obj[i].toLocaleString(locales, options);
+            }
+            stringArr = string + stringArr;
+        }
+        return stringArr;
+    }
+    slice(start = 0, end = this.length) {
+        if (start < 0) {
+            start += this.length;
+        };
+        if (start >= this.length) {
+            return [];
+        }
+        if (end < 0) {
+            end += this.length;
+        } else if (end > this.length) {
+            end = this.length;
+        }
+        let newArr = new DynamicArray();
+        while (start < end) {
+            newArr.push(this.data[start++])
+        }
+        return [...newArr.values()];
+    }
+    splice(start, deleteCount, ...values) {
+        if (start > this.length) {
+            start = this.length;
+        } else if (start < 0) {
+            start += this.length;
+            if (start < 0) {
+                start = 0;
+            }
+        }
+        if (deleteCount >= (this.length - start) || deleteCount === undefined) {
+            deleteCount = this.length - start;
+        } else if (deleteCount < 0) {
+            deleteCount = 0;
+        }
+        let numToAdd = values.length - deleteCount;
+        if (numToAdd > 0) {
+            for (let i = this.length - 1; i >= start + deleteCount; i--) {
+                this.data[i + numToAdd] = this.data[i];
+            }
+        }
+        let deleted = new DynamicArray();
+        while (start < this.length) {
+            if (deleteCount > 0) {
+                deleted.push(this.data[start]);
+                deleteCount--;
+            }
+            if (values.length > 0) {
+                this.data[start] = values.shift();
+            }
+            start++;
+        }
+        this.length += numToAdd;
+        return [...deleted.values()];
+    }
 }
 
 
-module.exports = { DynamicArray }
+module.exports = { DynamicArray };
